@@ -6,10 +6,10 @@ const path = require('path');
 const cmd = process.argv[2];
 const cwd = process.cwd();
 
-const commands = { init };
+const commands = { init, update };
 
 if (!cmd || !commands[cmd]) {
-  console.log('Usage: lightspec <command>\n\nCommands:\n  init    Install LightSpec skills into the current project');
+  console.log('Usage: lightspec <command>\n\nCommands:\n  init    Install LightSpec skills into the current project\n  update  Sync skill files from source into .claude/skills/');
   process.exit(cmd ? 1 : 0);
 }
 
@@ -42,6 +42,23 @@ function init() {
   writeClaudeMd(cwd);
 
   console.log('\nDone. Start with /ls:propose <change-name> in Claude Code.');
+}
+
+function update() {
+  const skillsSource = path.join(__dirname, '..', 'skills');
+  const skillsDest = path.join(cwd, '.claude', 'skills');
+
+  console.log('Updating LightSpec skills...\n');
+
+  for (const skill of fs.readdirSync(skillsSource)) {
+    const src = path.join(skillsSource, skill, 'SKILL.md');
+    const dest = path.join(skillsDest, skill);
+    fs.mkdirSync(dest, { recursive: true });
+    fs.copyFileSync(src, path.join(dest, 'SKILL.md'));
+    console.log(`  ✓ .claude/skills/${skill}/`);
+  }
+
+  console.log('\nDone.');
 }
 
 const CLAUDE_MD_BLOCK = `
