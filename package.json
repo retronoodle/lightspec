@@ -1,0 +1,16 @@
+{
+  "name": "lightspec",
+  "version": "0.1.0",
+  "description": "Lean, regression-first spec workflow for Claude Code",
+  "bin": {
+    "lightspec": "./bin/lightspec.js"
+  },
+  "files": [
+    "bin",
+    "skills"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
