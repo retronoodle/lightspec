@@ -38,5 +38,37 @@ function init() {
   console.log('  ✓ lightspec/changes/');
   console.log('  ✓ lightspec/archive/');
 
+  // Wire up CLAUDE.md
+  writeClaudeMd(cwd);
+
   console.log('\nDone. Start with /ls:propose <change-name> in Claude Code.');
+}
+
+const CLAUDE_MD_BLOCK = `
+## LightSpec
+
+This project uses LightSpec for spec-driven development.
+
+- Propose a change: \`/ls-propose <name>\`
+- Implement it: \`/ls-implement\`
+- Verify before archiving: \`/ls-verify\`
+- Archive when done: \`/ls-done\`
+
+Always run \`/ls-verify\` before \`/ls-done\`.
+`.trimStart();
+
+const CLAUDE_MD_MARKER = '## LightSpec';
+
+function writeClaudeMd(dir) {
+  const claudeMdPath = path.join(dir, 'CLAUDE.md');
+  const existing = fs.existsSync(claudeMdPath) ? fs.readFileSync(claudeMdPath, 'utf8') : '';
+
+  if (existing.includes(CLAUDE_MD_MARKER)) {
+    console.log('  ✓ CLAUDE.md already configured');
+    return;
+  }
+
+  const separator = existing.length > 0 && !existing.endsWith('\n\n') ? '\n' : '';
+  fs.writeFileSync(claudeMdPath, existing + separator + CLAUDE_MD_BLOCK);
+  console.log('  ✓ CLAUDE.md updated');
 }

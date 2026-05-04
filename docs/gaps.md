@@ -1,0 +1,3 @@
+  - No way to abort/drop a change that isn't happening
+  - No init script for bootstrapping LightSpec into a new project (Phase 2 in the PRD)
+  - No CLAUDE.md integration (open question in the PRD)
