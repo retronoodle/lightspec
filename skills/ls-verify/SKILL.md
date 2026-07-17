@@ -5,7 +5,7 @@ description: Regression-first verification of a LightSpec change. Checks task co
 
 Verify a LightSpec change — with a hard focus on regression.
 
-**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, list and ask.
+**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, run `lightspec list` to show them and ask.
 
 ---
 

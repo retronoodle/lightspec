@@ -36,6 +36,7 @@ lightspec init
 | `lightspec init` | Install LightSpec skills into the current project. |
 | `lightspec update` | Sync skill files from source into `.claude/skills/`. |
 | `lightspec upgrade` | Reinstall the global CLI from the latest GitHub release tag. |
+| `lightspec list` | List in-flight changes with task ratio and phase (`propose`/`implement`/`verify`). |
 
 - **`update`** refreshes only `.claude/skills/*/SKILL.md` — it never touches `lightspec/`, `CLAUDE.md`, or your changes.
 - **`upgrade`** reinstalls the CLI via `npm install -g 'retronoodle/lightspec#semver:*'`. Run `update` afterward to re-copy the newer skills into your project. (A linked dev checkout is detected and left untouched — pull the source instead.)

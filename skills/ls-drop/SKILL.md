@@ -5,7 +5,7 @@ description: Abandon an in-flight LightSpec change. Moves it from lightspec/chan
 
 Abandon a LightSpec change.
 
-**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, list and ask which to drop.
+**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, run `lightspec list` to show them and ask which to drop.
 
 ---
 

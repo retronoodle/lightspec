@@ -9,29 +9,20 @@ List all active LightSpec changes.
 
 **Steps**
 
-1. **Check `lightspec/changes/`** — if empty or missing, output "No active changes." and stop.
+1. **Run `lightspec list`** and show its output verbatim. It prints each change with its `done/total` ratio and phase (`propose`/`implement`/`verify`), or `No active changes.`
 
-2. **For each subdirectory**, read its `spec.md` and extract:
-   - **Name**: directory name
-   - **Task ratio**: count `- [x]` (done) and `- [ ]` (total unchecked), compute `done/total`
-   - **Phase**:
-     - `propose` — all tasks unchecked (done = 0)
-     - `implement` — some tasks checked (0 < done < total)
-     - `verify` — all tasks checked (done = total)
-
-3. **Output a table**:
-
-```
-Name                    Tasks   Phase
-----------------------  ------  ---------
-add-auth-flow           2/5     implement
-fix-login-redirect      0/3     propose
-refactor-api-client     4/4     verify
-```
+2. **Fallback** — only if `lightspec list` errors (e.g. an older global CLI without the command):
+   - **Check `lightspec/changes/`** — if empty or missing, output "No active changes." and stop.
+   - **For each subdirectory**, read its `spec.md` and extract:
+     - **Name**: directory name
+     - **Task ratio**: count `- [x]` (done) and total checkboxes, compute `done/total`
+     - **Phase**: `propose` (done = 0 or no tasks), `implement` (0 < done < total), `verify` (done = total)
+   - **Output a table** of name, ratio, and phase.
 
 ---
 
 **Rules**
-- Read each spec.md once — no re-reads
+- Prefer the CLI — it is the canonical implementation, so its output never diverges from the skill
+- In the fallback, read each spec.md once — no re-reads
 - If a spec has no tasks at all, show `0/0` and phase `propose`
-- No extra commentary — just the table (or "No active changes.")
+- No extra commentary — just the output (or "No active changes.")

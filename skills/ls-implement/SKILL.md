@@ -7,7 +7,7 @@ Implement tasks from a LightSpec change.
 
 **Input**: Optional change name. If omitted:
 - Auto-select if only one active change exists in `lightspec/changes/`
-- If multiple, list them and ask which one
+- If multiple, run `lightspec list` to show them and ask which one
 
 Always confirm: "Implementing: `<name>`"
 

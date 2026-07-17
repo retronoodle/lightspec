@@ -1,6 +1,6 @@
 {
   "name": "lightspec",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Lean, regression-first spec workflow for Claude Code",
   "bin": {
     "lightspec": "./bin/lightspec.js"

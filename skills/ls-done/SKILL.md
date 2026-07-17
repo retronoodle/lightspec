@@ -5,7 +5,7 @@ description: Archive a completed LightSpec change. Moves it from lightspec/chang
 
 Archive a LightSpec change.
 
-**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, list and ask.
+**Input**: Optional change name. If omitted, auto-select if only one active change. If multiple, run `lightspec list` to show them and ask.
 
 ---
 

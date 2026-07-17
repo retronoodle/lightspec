@@ -9,10 +9,10 @@ const cwd = process.cwd();
 
 const GIT_SPEC = "retronoodle/lightspec#semver:*";
 
-const commands = { init, update, upgrade };
+const commands = { init, update, upgrade, list };
 
 if (!cmd || !commands[cmd]) {
-  console.log('Usage: lightspec <command>\n\nCommands:\n  init     Install LightSpec skills into the current project\n  update   Sync skill files from source into .claude/skills/\n  upgrade  Reinstall the global CLI from the latest GitHub release tag');
+  console.log('Usage: lightspec <command>\n\nCommands:\n  init     Install LightSpec skills into the current project\n  update   Sync skill files from source into .claude/skills/\n  upgrade  Reinstall the global CLI from the latest GitHub release tag\n  list     List in-flight changes with task ratio and phase');
   process.exit(cmd ? 1 : 0);
 }
 
@@ -115,6 +115,50 @@ function installedGlobalVersion() {
     return pkg.version;
   } catch {
     return null;
+  }
+}
+
+function list() {
+  const changesDir = path.join(cwd, 'lightspec', 'changes');
+
+  let names = [];
+  try {
+    names = fs.readdirSync(changesDir, { withFileTypes: true })
+      .filter(d => d.isDirectory())
+      .map(d => d.name);
+  } catch {
+    // changes/ empty or missing
+  }
+
+  if (names.length === 0) {
+    console.log('No active changes.');
+    return;
+  }
+
+  const rows = names.map(name => {
+    const specPath = path.join(changesDir, name, 'spec.md');
+    let done = 0, total = 0;
+    try {
+      const lines = fs.readFileSync(specPath, 'utf8').split('\n');
+      for (const line of lines) {
+        const m = line.match(/^\s*-\s*\[( |x|X)\]/);
+        if (!m) continue;
+        total++;
+        if (m[1] !== ' ') done++;
+      }
+    } catch {
+      // no readable spec.md — treat as no tasks
+    }
+    const phase = total === 0 || done === 0 ? 'propose'
+      : done < total ? 'implement'
+      : 'verify';
+    return { name, ratio: `${done}/${total}`, phase };
+  });
+
+  const nameW = Math.max(...rows.map(r => r.name.length));
+  const ratioW = Math.max(...rows.map(r => r.ratio.length));
+  for (const r of rows) {
+    console.log(`${r.name.padEnd(nameW)}  ${r.ratio.padEnd(ratioW)}  ${r.phase}`);
   }
 }
 
