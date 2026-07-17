@@ -21,7 +21,7 @@ If no input at all, ask: "What do you want to build or fix?"
 2. **Scan prior specs** — before touching the codebase, search for related prior decisions:
    - Tokenize the change name (e.g. `add-user-auth` → `user`, `auth`)
    - Scan every `spec.md` in `lightspec/archive/` and `lightspec/changes/` (excluding the new one)
-   - A spec matches if its filename or `## Scope` section contains any of the tokens
+   - A spec matches if its filename, `## Scope` section, or `## Tags` line contains any of the tokens (token overlap only — do not broaden matching)
    - Note matched specs for Step 2b; if none match, skip silently
 
 3. **Extract prior decisions** from each matched spec:
@@ -38,6 +38,9 @@ If no input at all, ask: "What do you want to build or fix?"
 ```markdown
 # <name>
 
+## Tags: <comma-separated keywords>
+_(Optional single line — keywords for prior-spec research. Omit if none apply.)_
+
 ## What
 <one sentence>
 
@@ -49,6 +52,10 @@ If no input at all, ask: "What do you want to build or fix?"
 Files and areas this change touches:
 - <file or area>
 - <file or area>
+
+## Design
+_(Include only when a real architectural choice exists — a new module, schema, or interface with alternatives. Omit for trivial edits.)_
+<one paragraph: the chosen approach and why, over the alternatives>
 
 ## Deltas
 Behavioral contract for this change.
@@ -83,7 +90,10 @@ What existing behaviour could regress. Be specific — name files, functions, or
 - `## Risks` must be specific. Not "could break auth" — "could break `verifyToken()` in `src/auth/jwt.ts` if token shape changes". If you can't find specific risks, grep for callers of the touched functions.
 - If a matching spec is from `lightspec/changes/` (active, not archived), add it as a `## Risks` entry: "conflicts with in-progress change `<name>`" — do not list it only in `## Prior Art`.
 - `## Deltas` must have at least one requirement and one scenario. These are the behavioral tests for verify.
+- Include `## Design` only when a real architectural choice exists (new module, schema, or interface with alternatives). Omit it for trivial edits so the token budget is unaffected.
+- `## Deltas` must include at least one failure/edge scenario, not only success cases.
+- Every `Then` must be observable/assertable — never "works correctly" or similar. If a Then has nothing observable, rewrite it as a concrete, checkable outcome.
 - Keep the whole file under 400 tokens. Bullet lists, not prose.
-- Do not ask clarifying questions unless scope is genuinely ambiguous. Make reasonable decisions.
+- Before writing, if a key acceptance boundary is genuinely underspecified, ask up to 2–3 targeted questions; otherwise proceed. Don't interrogate — flow by default and make reasonable decisions.
 
 **Done** — tell the user the spec is at `lightspec/changes/<name>/spec.md` and they can edit it before implementing. Suggest `/ls:implement` when ready.
