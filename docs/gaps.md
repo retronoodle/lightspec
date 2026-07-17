@@ -11,11 +11,6 @@ full spec-driven-development experience, without breaking the token-light goal.
    symbols. Add one line: this is a heuristic; verify dynamic call patterns
    manually.
 
-2. **Abort/drop a change**
-   No way to kill a change that isn't happening. A small `ls-drop` skill, or a
-   `--drop` path in `ls-done` that moves to an `abandoned/` dir (or deletes with
-   confirmation).
-
 ## Low impact — polish
 
 3. **Scenario ↔ task linkage**
@@ -24,6 +19,8 @@ full spec-driven-development experience, without breaking the token-light goal.
 
 ## Shipped
 
+- ✅ **Abort/drop a change** — `ls-drop` skill moves an in-flight change from
+  `changes/` to `abandoned/<date>-<name>/`, preserving the record.
 - ✅ **Optional `## Design` section in `ls-propose`** — conditional one-paragraph
   design record so `ls-implement` isn't making silent design decisions.
 - ✅ **Require ≥1 failure/edge scenario in `## Deltas`** — raises the scenario
